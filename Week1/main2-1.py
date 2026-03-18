@@ -26,5 +26,5 @@ except KeyboardInterrupt:
     # 프로그램 강제 종료(Ctrl+C) 시 탈출
     pass
 
-# 하드웨어 리소스를 초기화, LED 소등
+# 하드웨어 리소스를 초기화, LED 소등.
 leds.off()

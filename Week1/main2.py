@@ -17,7 +17,7 @@ humanGreen = LED(21)
 
 try:
     while 1:
-        # [Phase 1] 차량 통행 및 보행자 정지 로직
+        # [Phase 1] 차량 통행 및 보행자 정지 로직.
         carRed.value = 0
         carYellow.value = 0
         carGreen.value = 1  
