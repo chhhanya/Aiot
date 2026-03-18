@@ -13,7 +13,7 @@ Aiot/
 │   └── README.md      (1주차 실습 메모)
 └── Week2/             (2주차 폴더)
     └── ...
-    ---
+
 ## 실습 환경
 
 **HARDWARE:** Rasberry Pi
