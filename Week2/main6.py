@@ -9,7 +9,7 @@ try:
     while 1:
         # MQ-2 센서 특성 제어 (가스 감지 시 Low 신호 발생)
         if gas.value == 0:
-            print("Detected Gas")
+            print("Gas Detected")
             bz.value = 1  # 알람 활성화
         else:
             print("Normal")
