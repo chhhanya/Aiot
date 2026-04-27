@@ -1,0 +1,4 @@
+# .gitignore 파일 내용
+config.py
+__pycache__/
+*.pyc
