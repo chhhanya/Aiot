@@ -1,56 +1,19 @@
-import paho.mqtt.client as mqtt # MQTT 통신 모듈 불러오기
-import time # 시간 관련 기능 모듈 불러오기
-from gpiozero import LED # GPIO 제어 모듈에서 LED 클래스 불러오기
-import threading # 두 작업을 동시에 처리하기 위한 스레드 모듈 불러오기
+# 🛰️ MQTT 양방향 통신 LED 제어 실습
 
-# 16, 20, 21번 핀에 연결된 초록, 파랑, 빨간 LED 설정
-greenLed = LED(16)
-blueLed = LED(20)
-redLed = LED(21)
+라즈베리 파이 5와 PC 간에 MQTT 프로토콜을 사용하여 데이터를 주고받고 LED를 제어하는 실습입니다.
 
-# 브로커로부터 메시지 수신 시 자동으로 실행되는 함수 정의
-def on_message(client, userdata, msg):
-    print(msg.topic + " " + str(msg.payload)) # 수신된 토픽과 데이터 출력
-    message = msg.payload.decode() # 수신된 바이트 데이터를 문자열로 변환
-    print(message) # 변환된 메시지 터미널에 출력
-    
-    # 수신된 메시지 내용에 따라 LED 켜기/끄기 제어
-    if message == "green_on":
-        greenLed.on()
-    elif message == "green_off":
-        greenLed.off()
-    elif message == "blue_on":
-        blue_on():
-        blueLed.on()
-    elif message == "blue_off":
-        blueLed.off()
-    elif message == "red_on":
-        redLed.on()
-    elif message == "red_off":
-        redLed.off()
+## 📋 주요 기능
+- **수신(Subscribe)**: PC(MQTT.fx)에서 보내는 메시지에 따라 초록, 파랑, 빨강 LED를 제어합니다.
+- **송신(Publish)**: 라즈베리 파이에서 1초마다 숫자를 카운트하여 PC로 전송합니다.
+- **멀티 스레딩**: `threading` 기법을 사용하여 데이터 송신과 수신이 동시에 이루어지도록 구현했습니다.
 
-client = mqtt.Client() # MQTT 클라이언트 객체 생성
-client.on_message = on_message # 메시지 수신 시 실행될 함수 연결
+## 🛠️ 환경 설정
+- **기기**: Raspberry Pi 5
+- **브로커 IP**: `192.168.0.44`
+- **사용 핀**: GPIO 16, 20, 21
+- **필수 라이브러리**: `paho-mqtt`, `gpiozero`, `lgpio`
 
-# 라즈베리 파이 브로커 IP 주소 설정 및 연결
-broker_address = "192.168.0.44" 
-client.connect(broker_address)
-client.subscribe("led", 1) # "led" 토픽 구독 등록 (QoS 1)
-
-count = 0 # 발행할 숫자의 초기값 설정
-
-# 1초마다 메시지를 발행하는 스레드용 함수 정의
-def send_thread():
-    global count
-    while 1:
-        count = count + 1 # count 값을 1씩 증가
-        # "hello" 토픽으로 count 값을 문자열로 변환하여 발행
-        client.publish("hello", str(count))
-        time.sleep(1.0) # 1초 대기 후 다시 반복
-
-# send_thread 함수를 별도의 스레드로 생성하여 실행 (양방향 통신 가능하게 함)
-task = threading.Thread(target=send_thread)
-task.start()
-
-# 메시지 수신을 위한 무한 대기 루프 실행
-client.loop_forever()
+## 🚀 실행 방법
+1. 회로도에 맞게 LED와 저항을 연결합니다.
+2. 라즈베리 파이에서 `main30-1.py`를 실행합니다.
+3. PC의 MQTT.fx에서 브로커에 접속한 뒤 `led` 토픽으로 메시지를 보내거나, `hello` 토픽을 구독하여 데이터를 확인합니다.
